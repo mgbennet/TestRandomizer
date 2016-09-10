@@ -1,0 +1,69 @@
+{
+q: 1
+a: Because they killed Humbaba and the Bull of Heaven**
+a: Because they went to the Underworld
+a: Because they killed Ut-napishtim
+a: Because they destroyed the gods’ temples
+a: Because they lived with wild animals
+
+Q: 2
+A: Gilgamesh**
+A: Oedipus
+A: Perseus
+A: Heracles
+A: Theseus 
+
+{
+Q: 3
+A: Tiresias**
+A: Creon
+A: Jocasta
+A: Laius
+A: Polybus 	
+
+Q: 4
+A: Oedipus**
+A: Heracles
+A: Perseus
+A: Laius
+A: Creon 
+}
+}
+
+{
+Q: 5
+A: Danae**
+A: Ariadne
+A: Andromeda
+A: Medea
+A: Helen 
+
+Q: 6
+A: Perseus**
+A: Achilles
+A: Oedipus
+A: Hector 
+A: Jason 
+
+Q: 7
+A: Killing the Minotaur**
+A: Killing the Lyrnaean hydra
+A: Retrieving the girdle of Hippolyta
+A: Cleaning the Augean stables
+A: Retrieving the apples of the Hesperides
+
+Q: 8
+A: Heracles**
+A: Theseus
+A: Gilgamesh
+A: Polydectes 
+A: Diomedes 
+
+Q: 9
+A: Heracles**
+A: Jason
+A: Minos
+A: Achilles
+A: Patroclus 
+}
+
