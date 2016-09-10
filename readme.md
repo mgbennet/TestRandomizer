@@ -8,7 +8,8 @@ Once you have an appropriately marked up input file, select it using the Browse 
 
 Example input
 -------------
-```{q: What is 2+2?
+```
+{q: What is 2+2?
 a: 3
 a: 4
 a: What
