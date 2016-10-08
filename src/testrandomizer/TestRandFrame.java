@@ -134,7 +134,8 @@ public class TestRandFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void inputTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputTextFieldActionPerformed
-        go();
+        String filePath = inputTextField.getText();
+        randomizeQuestionsFromFile(filePath);
     }//GEN-LAST:event_inputTextFieldActionPerformed
 
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
@@ -150,7 +151,8 @@ public class TestRandFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_browseButtonActionPerformed
 
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
-        go();
+        String filePath = inputTextField.getText();
+        randomizeQuestionsFromFile(filePath);
     }//GEN-LAST:event_goButtonActionPerformed
 
     /**
@@ -188,9 +190,8 @@ public class TestRandFrame extends javax.swing.JFrame {
         });
     }
     
-    public void go() {
+    public void randomizeQuestionsFromFile(String filePath) {
         try {
-            String filePath = inputTextField.getText();
             File f = new File(filePath);
             TestSection questions = readFileAndMakeQuestions(f);
             

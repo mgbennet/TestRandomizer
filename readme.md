@@ -1,15 +1,29 @@
-A tool for creating multiple versions of multiple choice tests with random orders for the questions and answers.
+TestRandomizer is a tool written for educators that quickly creates multiple versions of multiple choice tests with random orders for the questions and answers. This is intended to make cheating by copying other students' answers more difficult.
 
 Use
 ---
-To use, make a .txt file with the test questions and answers. Questions are indicated by a new line starting with "q:", followed by answers indicated by a new line starting with a "a:".
+1. Download the .jar file from the Releases page at the top of the github page, or build a jar from the source code.
+2. Ensure you have Java installed. Run the .jar file.
+3. In Notepad or a similar program, create a .txt file with the test questions and answers. It must follow the format explained below to be properly parsed by TestRandomizer.
+3. Using the Browse button, select your input file.
+4. Select the number of test versions you would like to generate.
+5. Give a name for the output files. Make sure it does not match an existing file in the folder containing the input file, as it will over write any existing file.
+6. Hit the Randomize Questions button. Output .txt files will be generated in the same folder as the input file. If you have selected "Open output files upon completion", these files will be opened in your computer's default .txt editing program.
+7. Copy-paste the contents of the output files into a better text editor like Word in order to give proper formatting.
+
+Input format
+------------
+TestRandomizer takes a .txt file with test questions and answers and outputs a set of .txt files with the questions and their answers in a random order.
+
+Questions are indicated by a new line starting with "q:", and the answers pertaining to a question are on the following lines starting with a "a:".
+
 By surrounding a group of one or more questions in curly braces, you can keep them together in a section, but are in a random order within that section. For example, if you have a series of questions about a certain topic, you could put them into a section together so they appear in the same part of the test, but in a random order.
-Once you have an appropriately marked up input file, select it using the Browse button in the GUI, select the number of test versions, and give your output file a name. Hitting the Randomize Questions button will create as many test versions as you asked for in the same folder as the input files. You may then copy paste the contents of these .txt files into a better text editor like Word for formatting.
 
 Example input
 -------------
 ```
-{q: What is 2+2?
+{
+q: What is 2+2?
 a: 3
 a: 4
 a: What
@@ -25,6 +39,7 @@ a: Hello.
 a: Lo.
 a: Ho.
 }
+
 q: Why did the gods become angry at Gilgamesh and Enkidu in the Epic of Gilgamesh?
 a: Because they killed Humbaba and the Bull of Heaven
 a: Because they went to the Underworld
