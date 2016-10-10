@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package testrandomizer;
 
 import java.util.*;
@@ -35,14 +29,17 @@ public class Question implements TestRandObj{
         return text;
     }
     
+    @Override
     public void appendAnswer(String s) {
         answers.add(s);
     }
     
+    @Override
     public String writeOut(int num) {
-        return num+". "+this.toString();
+        return num + ". " + this.toString();
     }
     
+    @Override
     public int numQuestions() {
         return 1;
     }
@@ -57,11 +54,11 @@ public class Question implements TestRandObj{
     
     @Override
     public String toString() {
-        String returnMe = text;
-        for (int i = 0; i<answers.size(); i++) {
+        String result = text;
+        for (int i = 0; i < answers.size(); i++) {
             char c = (char) (97+i);
-            returnMe += "\r\n " +c+") "+answers.get(i);
+            result += "\r\n " + c + ") " + answers.get(i);
         }
-        return returnMe;
+        return result;
     }
 }

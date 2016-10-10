@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package testrandomizer;
 import java.awt.FileDialog;
 import java.awt.Desktop;
@@ -146,7 +140,7 @@ public class TestRandFrame extends javax.swing.JFrame {
         String targetFile = fd.getFile();
         if (fd.getFile() != null) {
             String targetDir = fd.getDirectory();
-            inputTextField.setText(targetDir+targetFile);
+            inputTextField.setText(targetDir + targetFile);
         }
     }//GEN-LAST:event_browseButtonActionPerformed
 
@@ -193,7 +187,7 @@ public class TestRandFrame extends javax.swing.JFrame {
     public void randomizeQuestionsFromFile(String filePath) {
         try {
             File f = new File(filePath);
-            TestSection questions = readFileAndMakeQuestions(f);
+            TestSection questions = readAndParseFile(f);
             
             List<File> outFiles = writeOutput(questions, f);
             if (openFilesAfterCheckBox.isSelected()) {
@@ -207,36 +201,36 @@ public class TestRandFrame extends javax.swing.JFrame {
             }
         } catch (FileNotFoundException ex) {
             //Logger.getLogger(TestRandFrame.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("File not found. "+inputTextField.getText());
+            System.out.println("File not found. " + inputTextField.getText());
         }
     }
     
-    public TestSection readFileAndMakeQuestions(File f) throws FileNotFoundException {
+    public TestSection readAndParseFile(File f) throws FileNotFoundException {
         Scanner sc = new Scanner(f, "latin1");
         TestSection questions = parseSection(sc);
         return questions;
     }
     
     public TestSection parseSection(Scanner sc) {
-        TestSection returnMe = new TestSection();
+        TestSection result = new TestSection();
         while (sc.hasNext() && sc.hasNextLine()) {
             String n = sc.next().toLowerCase();
             switch (n) {
                 case "}":
-                    return returnMe;
+                    return result;
                 case "{":
-                    returnMe.add(parseSection(sc));
+                    result.add(parseSection(sc));
                     break;
                 case "q:":
                     String q = sc.nextLine().trim();
-                    returnMe.add(new Question(q));
+                    result.add(new Question(q));
                     break;
                 case "a:":
-                    if (returnMe.isEmpty()) {
+                    if (result.isEmpty()) {
                         System.out.println("Can't parse line, a: needs to be nested beneath a q:");
                     } else {
                         String a = sc.nextLine().trim();
-                        returnMe.get(returnMe.size()-1).appendAnswer(a);
+                        result.get(result.size()-1).appendAnswer(a);
                     }
                     break;
                 default:
@@ -248,7 +242,7 @@ public class TestRandFrame extends javax.swing.JFrame {
             }
         }
         System.out.println("Never saw a }");
-        return returnMe;
+        return result;
     }
     
     public List<File> writeOutput(TestSection questions, File f) {
@@ -260,8 +254,8 @@ public class TestRandFrame extends javax.swing.JFrame {
 
             Writer writer = null;
             try {
-                String outFileName = outputTextField.getText()+(i+1)+".txt";
-                String outFilePath = f.getParent()+"\\"+outFileName;
+                String outFileName = outputTextField.getText() + (i+1) + ".txt";
+                String outFilePath = f.getParent() + "\\" + outFileName;
                 writer = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(outFilePath), "ISO-8859-1"));
                 writer.write(toFile);

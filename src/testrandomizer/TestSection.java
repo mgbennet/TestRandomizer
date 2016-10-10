@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package testrandomizer;
 
 import java.util.*;
@@ -29,27 +23,29 @@ public class TestSection implements TestRandObj{
     }
     
     public Boolean isEmpty() {
-        return (questions.size()==0);
+        return questions.isEmpty();
     }
     
+    @Override
     public int numQuestions() {
-        int returnMe = 0;
-        for (int i = 0; i < questions.size(); i++) {
-            returnMe += questions.get(i).numQuestions();
+        int result = 0;
+        for (TestRandObj question : questions) {
+            result += question.numQuestions();
         }
-        return returnMe;
+        return result;
     }
     
+    @Override
     public String writeOut(int num) {
-        String returnMe = "";
+        String result = "";
         for (TestRandObj i : questions) {
-            if (!returnMe.equals("")) {
-                returnMe += "\r\n\r\n";
+            if (!result.equals("")) {
+                result += "\r\n\r\n";
             }
-            returnMe += i.writeOut(num);
-            num+=i.numQuestions();
+            result += i.writeOut(num);
+            num += i.numQuestions();
         }
-        return returnMe+"";
+        return result + "";
     }
     
     public int size() {
@@ -62,26 +58,27 @@ public class TestSection implements TestRandObj{
     
     @Override
     public void shuffle() {
-        for (int i = 0; i < questions.size(); i++) {
-            questions.get(i).shuffle();
+        for (TestRandObj question : questions) {
+            question.shuffle();
         }
         Collections.shuffle(questions);
     }
     
+    @Override
     public void appendAnswer(String s) {
         questions.get(questions.size()-1).appendAnswer(s);
     }
     
     @Override
     public String toString() {
-        String returnMe = "{";
-        for (int i = 0; i<questions.size(); i++) {
-            if (i!=0) {
-                returnMe+="\r\n\r\n";
+        String result = "{";
+        for (int i = 0; i < questions.size(); i++) {
+            if (i != 0) {
+                result += "\r\n\r\n";
             }
-            returnMe += questions.get(i).toString();
+            result += questions.get(i).toString();
         }
-        return returnMe+"}";
+        return result + "}";
     }
     
 }
