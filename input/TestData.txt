@@ -1,0 +1,28 @@
+q: What is 2+2?
+a: 3
+a: 4
+a: What
+a: 4.4
+
+q: Where are the bodies?
+a: Umm....
+a: I'll never talk.
+a: In the cemetary. Duh.
+
+q: Hi.
+a: Hello.
+a: Lo.
+a: Ho.
+
+q: Why did the gods become angry at Gilgamesh and Enkidu in the Epic of Gilgamesh?
+a: Because they killed Humbaba and the Bull of Heaven**
+a: Because they went to the Underworld
+a: Because they killed Ut-napishtim
+a: Because they destroyed the gods' temple
+
+Q: What do you want to be when you grow up?
+a: A monster.
+A: A copy editor.
+a: A firetruck.
+A: Rich.
+a: A home owner.

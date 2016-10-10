@@ -1,7 +1,6 @@
 package testrandomizer;
 import java.awt.FileDialog;
 import java.awt.Desktop;
-import java.util.Scanner;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -187,7 +186,8 @@ public class TestRandFrame extends javax.swing.JFrame {
     public void randomizeQuestionsFromFile(String filePath) {
         try {
             File f = new File(filePath);
-            TestSection questions = readAndParseFile(f);
+            FileReader fr = new FileReader(f);
+            TestSection questions = readAndParseFile(fr);
             
             List<File> outFiles = writeOutput(questions, f);
             if (openFilesAfterCheckBox.isSelected()) {
@@ -202,42 +202,42 @@ public class TestRandFrame extends javax.swing.JFrame {
         } catch (FileNotFoundException ex) {
             //Logger.getLogger(TestRandFrame.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("File not found. " + inputTextField.getText());
+        } catch (IOException ex) {
+            System.out.println("IOException. " + ex.toString());
         }
     }
     
-    public TestSection readAndParseFile(File f) throws FileNotFoundException {
-        Scanner sc = new Scanner(f, "latin1");
-        TestSection questions = parseSection(sc);
+    public TestSection readAndParseFile(FileReader f) throws FileNotFoundException, IOException {
+        LineNumberReader lr = new LineNumberReader(f);
+        TestSection questions = parseSection(lr);
         return questions;
     }
     
-    public TestSection parseSection(Scanner sc) {
+    public TestSection parseSection(LineNumberReader lr) throws IOException {
         TestSection result = new TestSection();
-        while (sc.hasNext() && sc.hasNextLine()) {
-            String n = sc.next().toLowerCase();
-            switch (n) {
+        String n;
+        while ((n = lr.readLine()) != null) {
+            String[] parsedLine = n.split(" ", 2);
+            switch (parsedLine[0].toLowerCase()) {
                 case "}":
                     return result;
                 case "{":
-                    result.add(parseSection(sc));
+                    result.add(parseSection(lr));
                     break;
                 case "q:":
-                    String q = sc.nextLine().trim();
+                    String q = parsedLine[1].trim();
                     result.add(new Question(q));
                     break;
                 case "a:":
                     if (result.isEmpty()) {
                         System.out.println("Can't parse line, a: needs to be nested beneath a q:");
                     } else {
-                        String a = sc.nextLine().trim();
+                        String a = parsedLine[1].trim();
                         result.get(result.size()-1).appendAnswer(a);
                     }
                     break;
                 default:
-                    if (sc.hasNextLine()) {
-                        sc.nextLine();
-                    }
-                    System.out.println("Line wasn't empty, or didn't start with q: or a:");
+                    System.out.println("Line " + lr.getLineNumber() + " was empty, or didn't start with q: or a:");
                     
             }
         }
