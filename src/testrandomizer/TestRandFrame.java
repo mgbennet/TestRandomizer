@@ -5,6 +5,8 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.*;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.*;
 
 /**
  *
@@ -133,7 +135,7 @@ public class TestRandFrame extends javax.swing.JFrame {
 
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         FileDialog fd = new java.awt.FileDialog(this, "Choose a file...", FileDialog.LOAD);
-        fd.setDirectory("C:\\");
+        fd.setDirectory(FileSystemView.getFileSystemView().getDefaultDirectory().toString());
         fd.setFile("*.txt");
         fd.setVisible(true);
         String targetFile = fd.getFile();
@@ -188,9 +190,10 @@ public class TestRandFrame extends javax.swing.JFrame {
             File f = new File(filePath);
             FileReader fr = new FileReader(f);
             TestSection questions = readAndParseFile(fr);
+            int numFiles = numVersionsBox.getSelectedIndex();
             
-            List<File> outFiles = writeOutput(questions, f);
-            if (openFilesAfterCheckBox.isSelected()) {
+            List<File> outFiles = writeOutput(questions, f, numFiles);
+            if (openFilesAfterCheckBox.isSelected() && outFiles != null) {
                 for (File file : outFiles) {
                     try {
                         Desktop.getDesktop().open(file);
@@ -245,28 +248,50 @@ public class TestRandFrame extends javax.swing.JFrame {
         return result;
     }
     
-    public List<File> writeOutput(TestSection questions, File f) {
-        List<File> outputFiles = new ArrayList<>();
-        for (int i = 0; i <= numVersionsBox.getSelectedIndex(); i++) {
-            questions.shuffle();
-            int questionNumber = 1;
-            String toFile = questions.writeOut(questionNumber);
-
-            Writer writer = null;
-            try {
-                String outFileName = outputTextField.getText() + (i+1) + ".txt";
-                String outFilePath = f.getParent() + "\\" + outFileName;
-                writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(outFilePath), "ISO-8859-1"));
-                writer.write(toFile);
-                outputFiles.add(new File(outFilePath));
-            } catch (IOException ex) {
-                System.out.println("Caught IOException");
-            } finally {
-               try {writer.close();} catch (IOException ex) {}
+    public List<File> writeOutput(TestSection questions, File f, int numFiles) {
+        //check if files already exist and ask if it's ok to overwrite
+        List<String> existingFiles = new ArrayList<>();
+        for (int i = 0; i <= numFiles; i++) {
+            String outFileName = outputTextField.getText() + (i+1) + ".txt";
+            String outFilePath = f.getParent() + File.separator + outFileName;
+            File outFile = new File(outFilePath);
+            if (outFile.isFile()) {
+                existingFiles.add(outFileName);
             }
         }
-        return outputFiles;
+        int proceed = 0;
+        if (!existingFiles.isEmpty()) {
+            String existingFilesString = "";
+            for (String fName : existingFiles) {
+                existingFilesString += "\n\t" + fName;
+            }
+            existingFilesString = "The following files already exist: " + existingFilesString + "\nWould you like to overwrite?";
+            proceed = JOptionPane.showConfirmDialog(this, existingFilesString, "File already exists!", 0);
+        }
+        
+        if (proceed == 0) {
+            List<File> outputFiles = new ArrayList<>();
+            for (int i = 0; i <= numFiles; i++) {
+                questions.shuffle();
+                int questionNumber = 1;
+                String toFile = questions.writeOut(questionNumber);
+
+                Writer writer = null;
+                try {
+                    String outFileName = outputTextField.getText() + (i+1) + ".txt";
+                    String outFilePath = f.getParent() + File.separator + outFileName;
+                    writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(outFilePath), "ISO-8859-1"));
+                    writer.write(toFile);
+                    outputFiles.add(new File(outFilePath));
+                } catch (IOException ex) {
+                    System.out.println("Caught IOException");
+                } finally {
+                   try {writer.close();} catch (IOException ex) {}
+                }
+            }
+            return outputFiles;
+        } else return null;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

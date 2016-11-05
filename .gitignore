@@ -1,7 +1,10 @@
 .DS_Store
 
 dist/
-
+input/TestVersion1.txt
+input/Testversion2.txt
+input/TestVersion3.txt
+input/Testversion4.txt
 
 *.class
 
