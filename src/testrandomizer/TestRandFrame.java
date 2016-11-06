@@ -35,10 +35,10 @@ public class TestRandFrame extends javax.swing.JFrame {
         browseButton = new javax.swing.JButton();
         goButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        numVersionsBox = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         outputTextField = new javax.swing.JTextField();
         openFilesAfterCheckBox = new javax.swing.JCheckBox();
+        numVersionsInp = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,15 +66,15 @@ public class TestRandFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Number of test versions");
 
-        numVersionsBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4" }));
-        numVersionsBox.setSelectedIndex(1);
-
         jLabel3.setText("Output");
 
         outputTextField.setText("TestVersion");
 
         openFilesAfterCheckBox.setSelected(true);
         openFilesAfterCheckBox.setText("Open output files upon completion");
+
+        numVersionsInp.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(2), Integer.valueOf(1), null, Integer.valueOf(1)));
+        numVersionsInp.setName("numVersionsInp"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -87,8 +87,8 @@ public class TestRandFrame extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(numVersionsBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(numVersionsInp, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel1)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -113,7 +113,7 @@ public class TestRandFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(numVersionsBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numVersionsInp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -190,8 +190,7 @@ public class TestRandFrame extends javax.swing.JFrame {
             File f = new File(filePath);
             FileReader fr = new FileReader(f);
             TestSection questions = readAndParseFile(fr);
-            int numFiles = numVersionsBox.getSelectedIndex();
-            
+            int numFiles = Integer.parseInt(numVersionsInp.getValue().toString());
             List<File> outFiles = writeOutput(questions, f, numFiles);
             if (openFilesAfterCheckBox.isSelected() && outFiles != null) {
                 for (File file : outFiles) {
@@ -220,18 +219,18 @@ public class TestRandFrame extends javax.swing.JFrame {
         TestSection result = new TestSection();
         String n;
         while ((n = lr.readLine()) != null) {
-            String[] parsedLine = n.split(" ", 2);
+            String[] parsedLine = n.split(":", 2);
             switch (parsedLine[0].toLowerCase()) {
                 case "}":
                     return result;
                 case "{":
                     result.add(parseSection(lr));
                     break;
-                case "q:":
+                case "q":
                     String q = parsedLine[1].trim();
                     result.add(new Question(q));
                     break;
-                case "a:":
+                case "a":
                     if (result.isEmpty()) {
                         System.out.println("Can't parse line, a: needs to be nested beneath a q:");
                     } else {
@@ -301,7 +300,7 @@ public class TestRandFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JComboBox numVersionsBox;
+    private javax.swing.JSpinner numVersionsInp;
     private javax.swing.JCheckBox openFilesAfterCheckBox;
     private javax.swing.JTextField outputTextField;
     // End of variables declaration//GEN-END:variables
