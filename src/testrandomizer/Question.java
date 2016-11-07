@@ -10,10 +10,12 @@ public class Question implements TestRandObj{
     
     private String text;
     private List<String> answers;
+    private String correctAnswer;
     
     public Question(String txt) {
         text = txt;
         this.answers = new ArrayList<>();
+        correctAnswer = null;
     }
     
     @Override
@@ -35,8 +37,24 @@ public class Question implements TestRandObj{
     }
     
     @Override
+    public void appendAnswer(String s, boolean isCorrect) {
+        answers.add(s);
+        if (isCorrect)
+            correctAnswer = s;
+    }
+    
+    @Override
     public String writeOut(int num) {
         return num + ". " + this.toString();
+    }
+    
+    @Override
+    public String writeAnswerKey(int num) {
+        char answer = '?';
+        int i = answers.indexOf(correctAnswer);
+        if (i >= 0)
+            answer = (char) (97+i);
+        return num + ": " + answer;
     }
     
     @Override

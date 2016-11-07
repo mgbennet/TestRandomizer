@@ -26,7 +26,11 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="openFilesAfterCheckBox" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="openFilesAfterCheckBox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="answerKeyCheckBox" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -74,7 +78,10 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="goButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="openFilesAfterCheckBox" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="openFilesAfterCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="answerKeyCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace pref="133" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -134,6 +141,11 @@
           <SpinnerModel initial="2" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
         <Property name="name" type="java.lang.String" value="numVersionsInp" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="answerKeyCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Create answer key"/>
       </Properties>
     </Component>
   </SubComponents>

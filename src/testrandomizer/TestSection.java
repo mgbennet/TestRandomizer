@@ -48,6 +48,19 @@ public class TestSection implements TestRandObj{
         return result + "";
     }
     
+    @Override
+    public String writeAnswerKey(int num) {
+        String result = "";
+        for (TestRandObj i : questions) {
+            if (!result.equals("")) {
+                result += "\r\n";
+            }
+            result += i.writeAnswerKey(num);
+            num += i.numQuestions();
+        }
+        return result + "";
+    }
+    
     public int size() {
         return questions.size();
     }
@@ -67,6 +80,11 @@ public class TestSection implements TestRandObj{
     @Override
     public void appendAnswer(String s) {
         questions.get(questions.size()-1).appendAnswer(s);
+    }
+    
+    @Override
+    public void appendAnswer(String s, boolean isCorrect) {
+        questions.get(questions.size()-1).appendAnswer(s, isCorrect);
     }
     
     @Override

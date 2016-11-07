@@ -15,7 +15,7 @@ Input format
 ------------
 TestRandomizer takes a .txt file with test questions and answers and outputs a set of .txt files with the questions and their answers in a random order.
 
-Questions are indicated by a new line starting with "q:", and the answers pertaining to a question are on the following lines starting with a "a:".
+Questions are indicated by a new line starting with "q:", and the answers pertaining to a question are on the following lines starting with a "a:". One answer may be marked as "correct" by starting the line with "a*:". An answer key may then be generated for each test version (questions with no answer marked as correct will have a "?" in the answer key).
 
 By surrounding a group of one or more questions in curly braces, you can keep them together in a section, but are in a random order within that section. For example, if you have a series of questions about a certain topic, you could put them into a section together so they appear in the same part of the test, but in a random order.
 
@@ -25,7 +25,7 @@ Example input
 {
 q: What is 2+2?
 a: 3
-a: 4
+a*: 4
 a: What
 a: 4.4
 
@@ -35,13 +35,13 @@ a: I'll never talk.
 a: In the cemetary. Duh.
 
 q: Hi.
-a: Hello.
 a: Lo.
 a: Ho.
+a*: Hello.
 }
 
 q: Why did the gods become angry at Gilgamesh and Enkidu in the Epic of Gilgamesh?
-a: Because they killed Humbaba and the Bull of Heaven
+a*: Because they killed Humbaba and the Bull of Heaven
 a: Because they went to the Underworld
 a: Because they killed Ut-napishtim
 a: Because they destroyed the gods' temple
@@ -58,5 +58,4 @@ More examples can be found in the Input directory of the code.
 ToDo
 ----
 * Add better error reporting for bad input.
-* Add answer key output
 * Add fixed answer or question position, for example an "All of the above" option.

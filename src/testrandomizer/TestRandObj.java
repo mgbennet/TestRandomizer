@@ -10,10 +10,14 @@ public interface TestRandObj {
     
     public String writeOut(int num);
     
+    public String writeAnswerKey(int num);
+    
     public int numQuestions();
     
     @Override
     public String toString();
     
     public void appendAnswer(String s);
+    
+    public void appendAnswer(String s, boolean isCorrect);
 }

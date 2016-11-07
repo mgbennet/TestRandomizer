@@ -39,6 +39,7 @@ public class TestRandFrame extends javax.swing.JFrame {
         outputTextField = new javax.swing.JTextField();
         openFilesAfterCheckBox = new javax.swing.JCheckBox();
         numVersionsInp = new javax.swing.JSpinner();
+        answerKeyCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +77,8 @@ public class TestRandFrame extends javax.swing.JFrame {
         numVersionsInp.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(2), Integer.valueOf(1), null, Integer.valueOf(1)));
         numVersionsInp.setName("numVersionsInp"); // NOI18N
 
+        answerKeyCheckBox.setText("Create answer key");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -83,7 +86,10 @@ public class TestRandFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(openFilesAfterCheckBox)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(openFilesAfterCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(answerKeyCheckBox))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel2)
@@ -121,7 +127,9 @@ public class TestRandFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(goButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(openFilesAfterCheckBox)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(openFilesAfterCheckBox)
+                    .addComponent(answerKeyCheckBox))
                 .addContainerGap(133, Short.MAX_VALUE))
         );
 
@@ -238,6 +246,14 @@ public class TestRandFrame extends javax.swing.JFrame {
                         result.get(result.size()-1).appendAnswer(a);
                     }
                     break;
+                case "a*":
+                    if (result.isEmpty()) {
+                        System.out.println("Can't parse line, a: needs to be nested beneath a q:");
+                    } else {
+                        String a = parsedLine[1].trim();
+                        result.get(result.size()-1).appendAnswer(a, true);
+                    }
+                    break;
                 default:
                     System.out.println("Line " + lr.getLineNumber() + " was empty, or didn't start with q: or a:");
                     
@@ -250,8 +266,8 @@ public class TestRandFrame extends javax.swing.JFrame {
     public List<File> writeOutput(TestSection questions, File f, int numFiles) {
         //check if files already exist and ask if it's ok to overwrite
         List<String> existingFiles = new ArrayList<>();
-        for (int i = 0; i <= numFiles; i++) {
-            String outFileName = outputTextField.getText() + (i+1) + ".txt";
+        for (int i = 1; i <= numFiles; i++) {
+            String outFileName = outputTextField.getText() + (i) + ".txt";
             String outFilePath = f.getParent() + File.separator + outFileName;
             File outFile = new File(outFilePath);
             if (outFile.isFile()) {
@@ -270,14 +286,14 @@ public class TestRandFrame extends javax.swing.JFrame {
         
         if (proceed == 0) {
             List<File> outputFiles = new ArrayList<>();
-            for (int i = 0; i <= numFiles; i++) {
+            for (int i = 1; i <= numFiles; i++) {
                 questions.shuffle();
                 int questionNumber = 1;
                 String toFile = questions.writeOut(questionNumber);
 
                 Writer writer = null;
                 try {
-                    String outFileName = outputTextField.getText() + (i+1) + ".txt";
+                    String outFileName = outputTextField.getText() + (i) + ".txt";
                     String outFilePath = f.getParent() + File.separator + outFileName;
                     writer = new BufferedWriter(new OutputStreamWriter(
                         new FileOutputStream(outFilePath), "ISO-8859-1"));
@@ -288,12 +304,32 @@ public class TestRandFrame extends javax.swing.JFrame {
                 } finally {
                    try {writer.close();} catch (IOException ex) {}
                 }
+                
+                if (answerKeyCheckBox.isSelected()) {
+                    questionNumber = 1;
+                    toFile = questions.writeAnswerKey(questionNumber);
+
+                    Writer keyWriter = null;
+                    try {
+                        String outFileName = outputTextField.getText() + (i) + "_Key.txt";
+                        String outFilePath = f.getParent() + File.separator + outFileName;
+                        keyWriter = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(outFilePath), "ISO-8859-1"));
+                        keyWriter.write(toFile);
+                        outputFiles.add(new File(outFilePath));
+                    } catch (IOException ex) {
+                        System.out.println("Caught IOException");
+                    } finally {
+                       try {keyWriter.close();} catch (IOException ex) {}
+                    }
+                }
             }
             return outputFiles;
         } else return null;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox answerKeyCheckBox;
     private javax.swing.JButton browseButton;
     private javax.swing.JButton goButton;
     private javax.swing.JTextField inputTextField;
