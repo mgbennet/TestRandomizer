@@ -199,7 +199,8 @@ public class TestRandFrame extends javax.swing.JFrame {
             FileReader fr = new FileReader(f);
             TestSection questions = readAndParseFile(fr);
             int numFiles = Integer.parseInt(numVersionsInp.getValue().toString());
-            List<File> outFiles = writeOutput(questions, f, numFiles);
+            boolean makeFiles = answerKeyCheckBox.isSelected();
+            List<File> outFiles = writeOutput(questions, f, numFiles, makeFiles);
             if (openFilesAfterCheckBox.isSelected() && outFiles != null) {
                 for (File file : outFiles) {
                     try {
@@ -263,7 +264,7 @@ public class TestRandFrame extends javax.swing.JFrame {
         return result;
     }
     
-    public List<File> writeOutput(TestSection questions, File f, int numFiles) {
+    public List<File> writeOutput(TestSection questions, File f, int numFiles, boolean makeKeys) {
         //check if files already exist and ask if it's ok to overwrite
         List<String> existingFiles = new ArrayList<>();
         for (int i = 1; i <= numFiles; i++) {
@@ -278,7 +279,7 @@ public class TestRandFrame extends javax.swing.JFrame {
         if (!existingFiles.isEmpty()) {
             String existingFilesString = "";
             for (String fName : existingFiles) {
-                existingFilesString += "\n\t" + fName;
+                existingFilesString += "\n  " + fName;
             }
             existingFilesString = "The following files already exist: " + existingFilesString + "\nWould you like to overwrite?";
             proceed = JOptionPane.showConfirmDialog(this, existingFilesString, "File already exists!", 0);
@@ -305,7 +306,7 @@ public class TestRandFrame extends javax.swing.JFrame {
                    try {writer.close();} catch (IOException ex) {}
                 }
                 
-                if (answerKeyCheckBox.isSelected()) {
+                if (makeKeys) {
                     questionNumber = 1;
                     toFile = questions.writeAnswerKey(questionNumber);
 
